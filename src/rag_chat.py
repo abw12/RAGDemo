@@ -27,11 +27,11 @@ def build_rag_chain():
     )
 
     vectordb = load_vector_store()
-    retriever = vectordb.as_retriever(search_kwargs={"k": 4})
+    retriever = vectordb.as_retriever(search_kwargs={"k": 6})
 
     # RAG prompt template
     prompt = ChatPromptTemplate.from_messages([
-       ("system",
+       ("ai",
          "You are a helpful cricket statistics assistant. "
          "Answer the user's question ONLY using the provided context from the CSV data. "
          "If the answer is not in the context, say "
@@ -42,8 +42,23 @@ def build_rag_chain():
 
     def rag_answer(question:str):
         # 1. Retrieve relevant docs from vector db
-        docs = retriever.invoke(question)
+        docs = retriever.invoke(question) ## The question is turned into a vector when you call invoke function
+
+        print("\n[DEBUG] Retrieved", len(docs), "documents")
+        for i,d in enumerate(docs):
+            print(f"\n[DEBUG] --- Doc #{i+1} ---")
+            print("[DEBUG] METADATA:", d.metadata)
+            print("[DEBUG] CONTENT PREVIEW:", d.page_content[:300].replace("\n", " "))
+        
+        if not docs:
+            return "No documents were retrieved from the vector store. Please check indexing."
+        
         context_text = "\n\n".join([d.page_content for d in docs])
+
+        # Optional: see the actual context passed to LLM
+        print("\n[DEBUG] ===== CONTEXT SENT TO LLM =====")
+        print(context_text[:1000])   # print first 1000 chars only
+        print("[DEBUG] ===== END CONTEXT =====\n")
 
         # 2. format prompt
         messages = prompt.format_messages(
