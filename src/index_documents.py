@@ -12,7 +12,7 @@ DATA_DIR = BASE_DIR / "data"
 VECTOR_DIR = BASE_DIR / "chroma_db"
 
 
-def load_documents():
+def load_csv_documents():
     docs = []
     # Load all CSV files in data/
     for csv_path in DATA_DIR.glob("*.csv"):
@@ -44,6 +44,9 @@ def build_and_persist_vector_store(raw_docs):
     ollama_embedding = OllamaEmbeddings(
         model = "nomic-embed-text" # using the model pulled in ollama
     )
+    # Optionally prefix to align with Nomic recommendations
+    for d in raw_docs:
+        d.page_content = "search_document: " + d.page_content
 
     vectordb = Chroma.from_documents(
         documents=raw_docs,
@@ -55,7 +58,7 @@ def build_and_persist_vector_store(raw_docs):
     return vectordb
 
 def main():
-    raw_docs = load_documents()
+    raw_docs = load_csv_documents()
     print(f"Loaded {len(raw_docs)} raw docs (rows)")
 
     # chunks = split_documents(raw_docs)
