@@ -15,7 +15,7 @@ def main():
         persist_directory=str(VECTOR_DIR)
     )
 
-    query="West Indies"
+    query="How many runs scored by AB de Villiers in ODI?"
     print(f"Question: {query}")
 
     docs_and_scores = vectordb.similarity_search_with_score(query,k=6)
