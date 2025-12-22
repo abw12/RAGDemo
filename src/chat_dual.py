@@ -15,7 +15,7 @@ VECTOR_DIR = BASE_DIR / "chroma_db"
 # ---------- RAG SETUP ----------
 
 def load_vector_store() -> Chroma:
-    embeddings = OllamaEmbeddings(model="nomic-embed-text")
+    embeddings = OllamaEmbeddings(model="all-minilm")
     vectordb = Chroma(
         embedding_function=embeddings,
         persist_directory=str(VECTOR_DIR)
@@ -116,7 +116,7 @@ def build_dual_chat():
 
     # RAG
     vectordb = load_vector_store()
-    retriever = vectordb.as_retriever(search_kwargs={"k":6})
+    retriever = vectordb.as_retriever(search_kwargs={"k":10})
     rag_prompt = build_rag_prompt()
 
     # Tabular (structured)

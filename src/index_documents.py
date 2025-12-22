@@ -42,11 +42,11 @@ def split_documents(docs):
 def build_and_persist_vector_store(raw_docs):
     #Embedding via ollama (nomic-embed-text)
     ollama_embedding = OllamaEmbeddings(
-        model = "nomic-embed-text" # using the model pulled in ollama
+        model = "all-minilm" # using the model pulled in ollama
     )
     # Optionally prefix to align with Nomic recommendations
-    for d in raw_docs:
-        d.page_content = "search_document: " + d.page_content
+    # for d in raw_docs:
+    #     d.page_content = "search_document: " + d.page_content
 
     vectordb = Chroma.from_documents(
         documents=raw_docs,

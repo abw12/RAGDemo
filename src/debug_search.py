@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).parent.parent
 VECTOR_DIR = BASE_DIR / "chroma_db"
 
 def main():
-    embeddings = OllamaEmbeddings(model="nomic-embed-text")
+    embeddings = OllamaEmbeddings(model="all-minilm")
     vectordb = Chroma(
         embedding_function=embeddings,
         persist_directory=str(VECTOR_DIR)
