@@ -23,7 +23,7 @@ def load_csv_documents():
             # If you want only some columns, you can use csv_args.
             # csv_args={"delimiter": ","}
         )
-        docs.extend(loader.load())
+        docs.extend(loader.load()) # 1 row = 1 Document
     return docs
 
 '''

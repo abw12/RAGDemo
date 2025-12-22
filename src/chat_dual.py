@@ -76,7 +76,7 @@ def structured_stats_answer(
     player_name = names[0]
 
     # 2. Get rows for that player from all tables
-    tables = get_player_rows(dfs,player_name,player_name)
+    tables = get_player_rows(dfs,player_name,player_column="player_name")
     if not tables:
         return f"I couldn't find any rows for player '{player_name}' in the CSVs."
     
